@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     #internal apps
     'dataentry',
     'uploads',
+    'emails',
     #third-party apps
     'crispy_forms',
     'crispy_bootstrap5',
