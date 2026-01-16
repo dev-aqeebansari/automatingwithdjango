@@ -8,6 +8,7 @@
     <form action="{% url 'send_email' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
+            {{ email_form.media }}
             {{ email_form  | crispy}}
         </div>
         <div>

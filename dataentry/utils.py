@@ -8,6 +8,8 @@ import csv
 
 from django.db import DataError
 
+from emails.models import Email, Sent
+
 def get_all_custom_models():
     default_models=['ContentType','Session','LogEntry','Group','Permission','User','Upload']
     #try to get all the apps
@@ -46,7 +48,7 @@ def check_csv_errors(file_path, model_name):
         raise e
     return model
 
-def send_email_notification(mail_subject, message, to_email, attachment=None):
+def send_email_notification(mail_subject, message, to_email, attachment=None, email_id = None):
     from_email = settings.DEFAULT_FROM_EMAIL
     try:
         from_email = settings.DEFAULT_FROM_EMAIL
@@ -56,6 +58,12 @@ def send_email_notification(mail_subject, message, to_email, attachment=None):
         # To send html type content if not coming properly
         mail.content_subtype = "html"
         mail.send()
+        # Store the  total sent emails inside  the Sent model
+        email = Email.objects.get(pk= email_id)
+        sent = Sent()
+        sent.email= email
+        sent.total_sent = email.email_list.count_emails()
+        sent.save()
     except Exception as e:
         raise e
 
