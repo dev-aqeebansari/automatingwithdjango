@@ -26,7 +26,7 @@ SECRET_KEY = config('DJANGO_SECRET_KEY',cast=str)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -186,47 +186,156 @@ customColorPalette = [
         },
     ]
 
+# CKEDITOR_5_CONFIGS = {
+#     'default': {
+#         'toolbar': {
+#             'items': ['heading', '|', 'bold', 'italic', 'link',
+#                       'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+#                     }
 
+#     },
+#     'extends': {
+#         'blockToolbar': [
+#             'paragraph', 'heading1', 'heading2', 'heading3',
+#             '|',
+#             'bulletedList', 'numberedList',
+#             '|',
+#             'blockQuote',
+#         ],
+#         'toolbar': {
+#             'items': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+#                       'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+#                     'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
+#                     'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+#                     'insertTable',
+#                     ],
+#             'shouldNotGroupWhenFull': 'true'
+#         },
+#         'image': {
+#             'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+#                         'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side',  '|'],
+#             'styles': [
+#                 'full',
+#                 'side',
+#                 'alignLeft',
+#                 'alignRight',
+#                 'alignCenter',
+#             ]
+
+#         },
+#         'table': {
+#             'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells',
+#             'tableProperties', 'tableCellProperties' ],
+#             'tableProperties': {
+#                 'borderColors': customColorPalette,
+#                 'backgroundColors': customColorPalette
+#             },
+#             'tableCellProperties': {
+#                 'borderColors': customColorPalette,
+#                 'backgroundColors': customColorPalette
+#             }
+#         },
+#         'heading' : {
+#             'options': [
+#                 { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
+#                 { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
+#                 { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
+#                 { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
+#             ]
+#         }
+#     },
+#     'list': {
+#         'properties': {
+#             'styles': 'true',
+#             'startIndex': 'true',
+#             'reversed': 'true',
+#         }
+#     }
+# }
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': {
-            'items': ['heading', '|', 'bold', 'italic', 'link',
-                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
-                    }
-
-    },
-    'extends': {
-        'blockToolbar': [
-            'paragraph', 'heading1', 'heading2', 'heading3',
-            '|',
-            'bulletedList', 'numberedList',
-            '|',
-            'blockQuote',
-        ],
-        'toolbar': {
-            'items': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
-                      'code','subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
-                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
-                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
-                    'insertTable',
-                    ],
-            'shouldNotGroupWhenFull': 'true'
+            'items': [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', '|',
+                'fontSize', 'fontFamily',
+                'fontColor', 'fontBackgroundColor', '|',
+                'alignment', '|',
+                'link', 'imageUpload', 'mediaEmbed', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'outdent', 'indent', '|',
+                'blockQuote', 'insertTable', '|',
+                'code', 'codeBlock', '|',
+                'sourceEditing', 'removeFormat'
+            ],
+            'shouldNotGroupWhenFull': True
         },
+        'link': {
+            'defaultProtocol': 'https://',
+            'decorators': {
+                'openInNewTab': {
+                    'mode': 'manual',
+                    'label': 'Open in new tab',
+                    'attributes': {
+                        'target': '_blank',
+                        'rel': 'noopener noreferrer'
+                    }
+                }
+            }
+        },
+        # TEXT COLORS
+        'fontColor': {
+            'colors': customColorPalette
+        },
+        'fontBackgroundColor': {
+            'colors': customColorPalette
+        },
+
+        #  FONTS
+        'fontFamily': {
+            'options': [
+                'default',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Times New Roman, Times, serif',
+                'Verdana, Geneva, sans-serif',
+            ]
+        },
+
+        'fontSize': {
+            'options': [10, 12, 14, 'default', 18, 20, 24, 28, 32]
+        },
+
+        #  IMAGE
         'image': {
-            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
-                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side',  '|'],
+            'toolbar': [
+                'imageTextAlternative',
+                '|',
+                'imageStyle:alignLeft',
+                'imageStyle:alignCenter',
+                'imageStyle:alignRight',
+                'imageStyle:full',
+                'imageStyle:side',
+            ],
             'styles': [
                 'full',
                 'side',
                 'alignLeft',
-                'alignRight',
                 'alignCenter',
+                'alignRight'
             ]
-
         },
+
+        # TABLE
         'table': {
-            'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells',
-            'tableProperties', 'tableCellProperties' ],
+            'contentToolbar': [
+                'tableColumn',
+                'tableRow',
+                'mergeTableCells',
+                'tableProperties',
+                'tableCellProperties'
+            ],
             'tableProperties': {
                 'borderColors': customColorPalette,
                 'backgroundColors': customColorPalette
@@ -236,27 +345,25 @@ CKEDITOR_5_CONFIGS = {
                 'backgroundColors': customColorPalette
             }
         },
-        'heading' : {
+
+        # HEADINGS
+        'heading': {
             'options': [
-                { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
-                { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
-                { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
-                { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
+                {'model': 'paragraph', 'title': 'Paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3'},
+                {'model': 'heading4', 'view': 'h4', 'title': 'Heading 4'},
             ]
-        }
-    },
-    'list': {
-        'properties': {
-            'styles': 'true',
-            'startIndex': 'true',
-            'reversed': 'true',
         }
     }
 }
-
 
 EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
 
 ANYMAIL = {
     "SENDINBLUE_API_KEY": config("SENDINBLUE_API_KEY"),
 }
+
+CSRF_TRUSTED_ORIGINS = ['https://armando-monogenous-abiotically.ngrok-free.dev']
+BASE_URL = 'https://armando-monogenous-abiotically.ngrok-free.dev'
