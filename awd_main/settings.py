@@ -32,6 +32,10 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    #django-autocomplete-light
+    'dal',
+    'dal_select2',
+    # default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'uploads',
     'emails',
     'image_compression',
+    'stockanalysis',
     #third-party apps
     'crispy_forms',
     'crispy_bootstrap5',
