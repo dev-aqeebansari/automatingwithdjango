@@ -5,5 +5,7 @@ from .models import Stock, StockData
 
 class StockAdmin(admin.ModelAdmin):
     search_fields = ('id','name', 'symbol')
+    list_display = ('id', 'symbol', 'name')
+    ordering = ("id",)
 admin.site.register(Stock,StockAdmin)
 admin.site.register(StockData)

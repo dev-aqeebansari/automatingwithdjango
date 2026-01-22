@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render,redirect
 from dal import autocomplete
-
 from .utils import scrape_stock_data
-from.models import Stock
+from.models import Stock, StockData
 from .forms import StockForm
+from django.contrib import messages
 # Create your views here.
 
 def stocks(request):
@@ -15,10 +15,31 @@ def stocks(request):
             stock = Stock.objects.get(pk=stock_id)
             symbol= stock.symbol
             exchange = stock.exchange
-            print(exchange)
-            print("symbol ==>  ", symbol)
             stock_response = scrape_stock_data(symbol, exchange)
-            print(stock_response)
+            
+            if stock_response:
+                try:
+                    stock_data = StockData.objects.get(stock=stock)
+                except StockData.DoesNotExist:
+                    stock_data = StockData(stock=stock)
+                
+                #update the StockData instance with the response data
+                stock_data.current_price = stock_response['current_price']
+                stock_data.previous_closed = stock_response['previous_close']
+                stock_data.price_changed = stock_response['price_changed']
+                stock_data.percentage_changed = stock_response['percentage_changed']
+                stock_data.week_52_low = stock_response['week_52_low']
+                stock_data.week_52_high = stock_response['week_52_high']
+                stock_data.market_cap = stock_response['market_cap']
+                stock_data.pe_ratio = stock_response['pe_ratio']
+                stock_data.dividend_yield = stock_response['dividend_yield']
+                stock_data.save()
+                print('data updated!')
+                return redirect('stock_detail', stock_data.id)
+                
+            else:
+                messages.error(request, f'Could not fetch the data for {symbol}')
+                return redirect('stocks')
         else:
             print('form is not valid')
     else:
@@ -34,7 +55,13 @@ class StockAutoComplete(autocomplete.Select2QuerySetView):
         qs = Stock.objects.all()
 
         if self.q:
-            print('entered_keyword=> ', self.q)
             qs = qs.filter(name__istartswith=self.q)
 
         return qs
+
+def stock_detail(request, pk):
+    stock_data = get_object_or_404(StockData, pk=pk)
+    context = {
+        "stock_data": stock_data,
+    }
+    return render(request, 'stockanalysis/stock_detail.html', context)
