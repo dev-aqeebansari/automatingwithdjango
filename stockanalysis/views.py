@@ -42,6 +42,7 @@ def stocks(request):
                 return redirect('stocks')
         else:
             print('form is not valid')
+            return redirect('home')
     else:
         form = StockForm()
         context = {
@@ -56,8 +57,8 @@ class StockAutoComplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(name__istartswith=self.q)
-
         return qs
+
 
 def stock_detail(request, pk):
     stock_data = get_object_or_404(StockData, pk=pk)

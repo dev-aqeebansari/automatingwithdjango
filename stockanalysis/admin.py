@@ -4,8 +4,10 @@ from .models import Stock, StockData
 
 
 class StockAdmin(admin.ModelAdmin):
-    search_fields = ('id','name', 'symbol')
-    list_display = ('id', 'symbol', 'name')
+    search_fields = ('id','name', 'symbol', 'exchange')
+    list_display = ('id', 'symbol', 'name','exchange')
     ordering = ("id",)
+
+
 admin.site.register(Stock,StockAdmin)
 admin.site.register(StockData)
